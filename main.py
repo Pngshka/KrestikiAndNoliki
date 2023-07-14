@@ -1,19 +1,15 @@
 from CellModel import *
 
-# Сделать ход в ячейку
 def step_maps(step, symbol):
-    ind = maps.index(step)
-    maps[ind] = symbol
+    index = maps.index(step)
+    maps[index] = symbol
 
-
-maps = [1, 2, 3,
-        4, 5, 6,
-        7, 8, 9]
+maps = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 def get_result():
     win = ""
 
-    for i in victories:
+    for i in successful_variations:
         if maps[i[0]] == "X" and maps[i[1]] == "X" and maps[i[2]] == "X":
             win = "X"
         if maps[i[0]] == "O" and maps[i[1]] == "O" and maps[i[2]] == "O":
@@ -22,14 +18,7 @@ def get_result():
     return win
 
 
-victories = [[0, 1, 2],
-             [3, 4, 5],
-             [0, 4, 8],
-             [6, 7, 8],
-             [0, 3, 6],
-             [1, 4, 7],
-             [2, 5, 8],
-             [2, 4, 6]]
+successful_variations = [[0, 1, 2], [3, 4, 5], [0, 4, 8], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [2, 4, 6]]
 
 # Основная программа
 game_over = False
@@ -57,6 +46,7 @@ while game_over == False:
     pygame.display.update()
 
     running = True
+    sum = 0
 
     while (running):
 
@@ -65,7 +55,6 @@ while game_over == False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-                # running = False
 
             x, y = pygame.mouse.get_pos()
             hover_cell = None
@@ -73,6 +62,7 @@ while game_over == False:
 
             for i in range(3):
                 for j in range(3):
+
                     current_cell = cells[i][j]
                     if current_cell.point_inside(x, y):
                         hover_cell = current_cell
@@ -82,6 +72,7 @@ while game_over == False:
                             click_cell = current_cell
                             cells[i][j].click_now = True
                             cells[i][j].Value = (j + 1) + 3 * i
+                            sum=sum+1
 
                             if player1 == True:
                                 symbol = "X"
@@ -98,10 +89,12 @@ while game_over == False:
                                 game_over = True
                                 print("Победил", win)
                             else:
+                                if sum==9:
+                                    game_over = True
+                                    print("Ничья")
                                 game_over = False
 
                             player1 = not (player1)
-                            #print(cells[i][j].Value)
 
                         else:
                             cells[i][j].click_now = False
@@ -109,17 +102,19 @@ while game_over == False:
                     else:
                         cells[i][j].hover_now = False
 
-            CellDrawer.draw_background(sc)
+            cell_drawer.draw_background(sc)
             for i in range(3):
                 for j in range(3):
                     current_cell = cells[i][j]
-                    CellDrawer.draw_cell(sc, current_cell)
+                    cell_drawer.draw_cell(sc, current_cell)
 
             if game_over == True:
                 if win == "O":
-                    sc.blit(pygame.image.load('bg.png'), (0, 0))
+                    sc.blit(pygame.image.load('win_O.png'), (0, 0))
                 else:
-                    sc.blit(pygame.image.load('bg_two.png'), (0, 0))
-
+                    if win == "X":
+                        sc.blit(pygame.image.load('win_X.png'), (0, 0))
+                    else:
+                        sc.blit(pygame.image.load('win_nobody.png'), (0, 0))
         pygame.display.update()
 

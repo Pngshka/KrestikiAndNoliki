@@ -13,13 +13,12 @@ class Cell:
     def point_inside(self, x, y):
         return self.X <= x <= self.Image.get_width() + self.X \
                 and \
-                self.Y <= y <= self.Image.get_height() + self.Y - 70 #вынести как константу
+                self.Y <= y <= self.Image.get_height() + self.Y - 70 #вынести константу
 
 
-class CellDrawer:
+class cell_drawer:
     @staticmethod
     def draw_cell(screen, cell):
-        #screen.blit(pygame.image.load('bg.png'), (1, 1))
         if cell.hover_now == False:
             screen.blit(cell.Image, (cell.X, cell.Y))
         else:
@@ -27,7 +26,6 @@ class CellDrawer:
                 screen.blit(cell.Image, (cell.X, cell.Y-30)) #вынести константу
             else:
                 screen.blit(cell.Image, (cell.X, cell.Y))
-                #printt(cell.X, cell.Y);
                 if cell.Value_two == "O":
                     screen.blit(pygame.image.load('O.png'), (cell.X, cell.Y))
                 else:
