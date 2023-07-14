@@ -1,4 +1,7 @@
 import pygame
+
+CELl_SIZE_ADJUSTMENT = 70
+CELL_Y_ON_HOVER = 30
 class cell:
     """ Класс клетки:
             Value - номер клетки
@@ -17,7 +20,7 @@ class cell:
         """ Функция, которая проверяет, наведен ли курсор на клетку """
         return self.X <= x <= self.Image.get_width() + self.X \
                 and \
-                self.Y <= y <= self.Image.get_height() + self.Y - 70 # вынести константу
+                self.Y <= y <= self.Image.get_height() + self.Y - CELl_SIZE_ADJUSTMENT
 
 
 class cell_drawer:
@@ -28,7 +31,7 @@ class cell_drawer:
             screen.blit(cell.Image, (cell.X, cell.Y))
         else:
             if cell.click_now == False and cell.Value == None:
-                screen.blit(cell.Image, (cell.X, cell.Y-30)) # вынести константу
+                screen.blit(cell.Image, (cell.X, cell.Y - CELL_Y_ON_HOVER))
             else:
                 screen.blit(cell.Image, (cell.X, cell.Y))
                 if cell.Value_two == "O":
